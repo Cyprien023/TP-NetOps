@@ -1,0 +1,8 @@
+wan_iface:   Ethernet1
+wan_ip:      10.10.1.2
+pe_ip:       10.10.1.1
+ce_as:       65101
+core_as:     65000
+lan_iface:   Ethernet2
+lan_gw:      192.168.10.1
+lan_network: 192.168.10.0

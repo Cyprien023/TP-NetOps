@@ -1,0 +1,31 @@
+- name: "Jalon 4"
+  hosts: pe1
+  gather_facts: false
+  any_errors_fatal: true
+  become: true
+  become_method: enable
+  tasks:
+    - name: Ping Paris → Avignon (TENANT_1)
+      arista.eos.eos_command:
+        commands: "ping vrf TENANT_1 192.168.11.1 repeat 5"
+      register: ping_t1
+    - name: Assert ping T1 OK
+      ansible.builtin.assert:
+        that: "'5 received' in ping_t1.stdout[0]"
+
+    - name: Ping Paris → Bordeaux (TENANT_2)
+      arista.eos.eos_command:
+        commands: "ping vrf TENANT_2 192.168.21.1 repeat 5"
+      register: ping_t2
+    - name: Assert ping T2 OK
+      ansible.builtin.assert:
+        that: "'5 received' in ping_t2.stdout[0]"
+
+    - name: Étanchéité — TENANT_1 ne doit pas joindre TENANT_2
+      arista.eos.eos_command:
+        commands: "ping vrf TENANT_1 192.168.20.1 repeat 3"
+      register: ping_cross
+    - name: Assert étanchéité
+      ansible.builtin.assert:
+        that: "'0 received' in ping_cross.stdout[0] or 'error' in ping_cross.stdout[0]"
+        fail_msg: "Fuite inter-VRF détectée !"

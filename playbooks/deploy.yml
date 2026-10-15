@@ -1,0 +1,26 @@
+- name: "Couche 1 — Cœur IGP + LDP (P nodes)"
+  hosts: p
+  gather_facts: false
+  tasks:
+    - name: Pousser config P
+      arista.eos.eos_config:
+        src: "../templates/p.j2"
+        replace: config
+
+- name: "Couche 2 — Plan de contrôle VPN (PE nodes)"
+  hosts: pe
+  gather_facts: false
+  tasks:
+    - name: Pousser config PE
+      arista.eos.eos_config:
+        src: "../templates/pe.j2"
+        replace: config
+
+- name: "Couche 3 — Raccordement CE"
+  hosts: ce
+  gather_facts: false
+  tasks:
+    - name: Pousser config CE
+      arista.eos.eos_config:
+        src: "../templates/ce.j2"
+        replace: config

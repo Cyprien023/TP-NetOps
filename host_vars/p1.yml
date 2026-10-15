@@ -1,0 +1,6 @@
+loopback: 10.0.0.1
+backbone_ifaces:
+  - name: Ethernet1
+    ip: 10.1.1.1      # vers pe1
+  - name: Ethernet2
+    ip: 10.1.1.9      # vers p2

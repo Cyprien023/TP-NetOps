@@ -1,0 +1,20 @@
+loopback: 10.0.0.12
+backbone_iface: Ethernet1
+backbone_ip: 10.1.1.6   # vers p2
+
+vrfs:
+  - name: TENANT_1
+    rd:       "65000:100"
+    rt:       "65000:100"
+    ce_iface: Ethernet2
+    pe_ip:    10.10.1.5
+    ce_ip:    10.10.1.6
+    ce_as:    65102
+
+  - name: TENANT_2
+    rd:       "65000:200"
+    rt:       "65000:200"
+    ce_iface: Ethernet3
+    pe_ip:    10.20.1.5
+    ce_ip:    10.20.1.6
+    ce_as:    65202

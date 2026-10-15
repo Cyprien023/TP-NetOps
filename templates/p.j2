@@ -1,0 +1,24 @@
+! === P ROUTER ===
+ip routing
+mpls ip
+
+interface Loopback0
+   ip address {{ loopback }}/32
+
+{% for iface in backbone_ifaces %}
+interface {{ iface.name }}
+   no switchport
+   ip address {{ iface.ip }}/30
+   ip ospf area 0.0.0.0
+
+{% endfor %}
+
+router ospf {{ ospf_pid }}
+   router-id {{ loopback }}
+   passive-interface Loopback0
+
+mpls ldp
+   router-id {{ loopback }}
+{% for iface in backbone_ifaces %}
+   interface {{ iface.name }}
+{% endfor %}

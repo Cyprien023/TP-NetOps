@@ -1,0 +1,17 @@
+! === CE ROUTER ===
+ip routing
+
+interface {{ wan_iface }}
+   no switchport
+   ip address {{ wan_ip }}/30
+
+interface {{ lan_iface }}
+   no switchport
+   ip address {{ lan_gw }}/24
+
+router bgp {{ ce_as }}
+   router-id {{ wan_ip }}
+   neighbor {{ pe_ip }} remote-as {{ core_as }}
+   address-family ipv4
+      neighbor {{ pe_ip }} activate
+      network {{ lan_network }}/24

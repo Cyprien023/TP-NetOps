@@ -1,0 +1,73 @@
+name: mpls-l3vpn
+
+topology:
+  defaults:
+    kind: ceos
+    image: ceos:latest
+    startup-config: |
+          username admin privilege 15 secret admin
+          !
+          management api http-commands
+            no shutdown
+          !
+          management api gnmi
+            transport grpc default
+            
+  nodes:
+    # MPLS
+    p1:
+      kind: ceos
+    p2:
+      kind: ceos
+
+    # Provider Edge
+    pe1:
+      kind: ceos
+    pe2:
+      kind: ceos
+
+    # ce A
+    ce-1-paris:
+      kind: ceos
+    ce-1-avignon:
+      kind: ceos
+
+    # ce B
+    ce-2-paris:
+      kind: ceos
+    ce-2-bordeaux:
+      kind: ceos
+
+    # Hosts Linux
+    host-paris-1:
+      kind: linux
+      image: alpine:latest
+    host-avignon-1:
+      kind: linux
+      image: alpine:latest
+    host-paris-2:
+      kind: linux
+      image: alpine:latest
+    host-bordeaux-2:
+      kind: linux
+      image: alpine:latest
+
+  links:
+    # Backbone
+    - endpoints: ["pe1:eth1", "p1:eth1"]
+    - endpoints: ["pe2:eth1", "p2:eth1"]
+    - endpoints: ["p1:eth2",  "p2:eth2"]
+
+    # pe1 ce Paris
+    - endpoints: ["pe1:eth2", "ce-1-paris:eth1"]
+    - endpoints: ["pe1:eth3", "ce-2-paris:eth1"]
+
+    # pe2 ce avignon/bordeaux
+    - endpoints: ["pe2:eth2", "ce-1-avignon:eth1"]
+    - endpoints: ["pe2:eth3", "ce-2-bordeaux:eth1"]
+
+    # ce hosts
+    - endpoints: ["ce-1-paris:eth2",    "host-paris-1:eth1"]
+    - endpoints: ["ce-2-paris:eth2",    "host-paris-2:eth1"]
+    - endpoints: ["ce-1-avignon:eth2",  "host-avignon-1:eth1"]
+    - endpoints: ["ce-2-bordeaux:eth2", "host-bordeaux-2:eth1"]

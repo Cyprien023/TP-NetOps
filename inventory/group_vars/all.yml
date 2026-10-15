@@ -1,0 +1,11 @@
+ansible_user:         admin
+ansible_password:     admin
+ansible_become_password: ""
+ansible_network_os:   arista.eos.eos
+ansible_connection:   ansible.netcommon.httpapi
+ansible_httpapi_use_ssl:       true
+ansible_httpapi_validate_certs: false
+ansible_httpapi_port:  443
+
+bgp_as:      65000
+rr_loopback: 10.0.0.1

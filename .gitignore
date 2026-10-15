@@ -1,0 +1,14 @@
+# Containerlab : fichiers générés
+clab-mpls-l3vpn/
+*.state.clab.yaml
+*.annotations.json
+topology-data.json
+
+# Clés privées et certificats générés
+*.key
+*.pem
+*.crt
+*.cer
+
+# Logs
+*.log

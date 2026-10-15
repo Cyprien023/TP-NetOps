@@ -1,0 +1,19 @@
+- name: Afficher le rendu du gabarit PE sans appliquer
+  hosts: pe
+  gather_facts: false
+  tasks:
+    - name: Rendu Jinja2 local
+      ansible.builtin.template:
+        src: "../templates/pe.j2"
+        dest: "/tmp/rendered_{{ inventory_hostname }}.txt"
+      delegate_to: localhost
+
+    - name: Afficher le rendu
+      ansible.builtin.command:
+        cmd: "cat /tmp/rendered_{{ inventory_hostname }}.txt"
+      delegate_to: localhost
+      register: rendered
+    
+    - name: Print
+      ansible.builtin.debug:
+        msg: "{{ rendered.stdout }}"
