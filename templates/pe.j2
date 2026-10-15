@@ -24,8 +24,6 @@ mpls ldp
 {% for vrf in vrfs %}
 vrf instance {{ vrf.name }}
    rd {{ vrf.rd }}
-   route-target import evpn {{ vrf.rt }}
-   route-target export evpn {{ vrf.rt }}
 
 ip routing vrf {{ vrf.name }}
 
@@ -48,8 +46,8 @@ router bgp {{ bgp_as }}
 {% for vrf in vrfs %}
    vrf {{ vrf.name }}
       rd {{ vrf.rd }}
-      route-target import {{ vrf.rt }}
-      route-target export {{ vrf.rt }}
+      route-target import vpn-ipv4 {{ vrf.rt }}
+      route-target export vpn-ipv4 {{ vrf.rt }}
       neighbor {{ vrf.ce_ip }} remote-as {{ vrf.ce_as }}
       address-family ipv4
          neighbor {{ vrf.ce_ip }} activate
